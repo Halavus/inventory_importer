@@ -1,0 +1,7 @@
+gunicorn*
+logs
+__*
+secret_key.py
+venv
+*.swp
+favicon_io
