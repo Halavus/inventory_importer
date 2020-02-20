@@ -5,3 +5,4 @@ secret_key.py
 venv
 *.swp
 favicon_io
+config_infos.txt
