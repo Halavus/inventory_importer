@@ -11,7 +11,7 @@ class Importer:
         #self.data for testing purposes
         self.data = data
 
-        matches = ["[A-Z]+","H2O","HE3","NV1","NV2"]
+        matches = ["H2O","HE3","NV1","NV2","[A-Z]+"]
         startmat = '(?<=<span class="MaterialIcon__ticker___1qLDE5z">)'
         startamount = ('(?<=<div class="MaterialIcon__indicator___2QhPuFO'
                        ' MaterialIcon__type-very-small___kE8NFjh">)')
@@ -39,9 +39,9 @@ class Importer:
             s=regexcolor+separator+s+startamount+"\d+"
             return s
 
-        regex=regexmaker()
+        self.regex=regexmaker()
        
-        self.match = re.findall(regex, data)
+        self.match = re.findall(self.regex, data)
 
         def grouper(n, iterable, fillvalue=None):
             "grouper(3, 'ABCDEFG', 'x') --> ABC DEF Gxx"
