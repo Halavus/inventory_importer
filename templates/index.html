@@ -17,8 +17,8 @@
     <table class="table table-bordered" style="max-width:20%;">
         {% for i in element %}
         <tr>
-            <td>{{ i[0] }}</td>
-            <td>{{ i[1] }}</td>
+            <td style="vertical-align: middle; text-align: center; {{ i[0] }} " >{{ i[1] }}</td>
+            <td>{{ i[2] }}</td>
         </tr>
         {% endfor %}
 {% else %}
