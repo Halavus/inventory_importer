@@ -35,7 +35,6 @@ class Importer:
                 #creates the regex string with correct syntax for every match
                 s=s+startmat+i+end+separator
 
-            #removes the last separator
             s=regexcolor+separator+s+startamount+"\d+"
             return s
 
