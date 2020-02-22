@@ -17,11 +17,16 @@ class Importer:
                        ' MaterialIcon__type-very-small___kE8NFjh">)')
         end = "(?=</)"
 
-        regexcolor = ('background: linear-gradient\(135deg,'
+        regexcolor_chrome = ('background: linear-gradient\(135deg,'
                 ' rgb\(\d+, \d+, \d+\),'
                 ' rgb\(\d+, \d+, \d+\)\); color: rgb\(\d+, \d+, \d+\);'
                 ' font-size: 15.84px')
+        regexcolor_firefox = ('background: rgba\(\d+, \d+, \d+, \d+\)'
+                ' linear-gradient\(135deg, rgb\(\d+, \d+, \d+\),'
+                ' rgb\(\d+, \d+, \d+\)\) repeat scroll \d+\% \d+\%;'
+                ' color: rgb\(\d+, \d+, \d+\); font-size: 15.84px')
         
+        regexcolor = regexcolor_chrome+"|"+regexcolor_firefox
         def regexmaker(
                 matches=matches, 
                 startmat=startmat, 
