@@ -3,6 +3,7 @@
 import re
 import csv
 from itertools import zip_longest
+from modules.regex import prod_importer as regex
 
 
 class Importer:
@@ -11,54 +12,16 @@ class Importer:
 
         # self.data for testing purposes
         self.data = data
-
-        matches_mat = ["H2O", "HE3", "NV1", "NV2", "[A-Z]+"]
-
-        start_mat = '(?<=<span class="MaterialIcon__ticker___1qLDE5z">)'
-
-        match_prodtime = '(?<=span><span>).*?(?=<\/span>)'
-
-        match_progress = '(?<="><span>)\d+(?=% done)'
-
-        units_prod = '(?<=p"><span>)\d+(?= unit)'
-
-        # to export to importer.py
-        regexcolor = (
-                'background: linear-gradient\(135deg,'
-                ' rgb\(\d+, \d+, \d+\),'
-                ' rgb\(\d+, \d+, \d+\)\); color: rgb\(\d+, \d+, \d+\);'
-                ' font-size: \d+.\d+px')
-
-        def regexmaker_mat(
-                matches_mat=matches_mat,
-                start_mat=start_mat,
-                units_prod=units_prod,
-                separator="|"):
-            s = ""
-            # creates the regex string with correct syntax for every match
-            for i in matches_mat:
-                s = ""
-                s = s+start_mat+i+separator
-
-            s = regexcolor+"|"+s+units_prod
-            return s
-
-        self.regex_mat = regexmaker_mat()
-        self.regex_prodtime = match_prodtime
-        self.regex_progress = match_progress
-
+        
         # colors, mat, unit(s)
-        self.mats = re.findall(self.regex_mat, data)
+        self.mats = re.findall(regex["mat"], data)
 
         # completion times prod & queue
-        prodtimes = re.findall(self.regex_prodtime, data)
-        self.prodtimes = []
-        for i in prodtimes:
-            i = i.replace("<span>in ", "")
-            self.prodtimes.append(i)
-
+        prodtimes = re.findall(regex["prodtime"], data)
+        self.prodtimes = [i.replace("<span>in ", "") for i in prodtimes]
+        
         # progress prod
-        self.progress = re.findall(self.regex_progress, data)
+        self.progress = re.findall(regex["progress"], data)
 
         def grouper(n, iterable, fillvalue=None):
             "grouper(3, 'ABCDEFG', 'x') --> ABC DEF Gxx"
