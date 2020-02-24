@@ -1,6 +1,7 @@
 gunicorn*
 logs/*
 __*
+!__init__.py
 secret_key.py
 venv
 *.swp
@@ -8,4 +9,3 @@ favicon_io
 config_infos.txt
 inv.txt
 *.csv
-Testing

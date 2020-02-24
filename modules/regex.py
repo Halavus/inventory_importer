@@ -11,6 +11,7 @@ regexcolor_firefox = (
         ' rgb\(\d+, \d+, \d+\)\) repeat scroll \d+\% \d+\%;'
         ' color: rgb\(\d+, \d+, \d+\); font-size: \d+.\d+px')
 
+regexcolor2 = separator.join((regexcolor_chrome, regexcolor_firefox))
 regexcolor = regexcolor_chrome+separator+regexcolor_firefox
 
 matches_mat = ["H2O", "HE3", "NV1", "NV2", "[A-Z]+"]
