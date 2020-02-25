@@ -3,9 +3,10 @@ from flask import Response
 from flask import stream_with_context, request
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
+from wtforms import TextAreaField, SubmitField
 from wtforms.validators import DataRequired
-from importer import Importer as i
+from modules.importer import Importer as inventory
+from modules.prodimporter import Importer as production
 from secret_key import secret_key as secret_key
 
 app = Flask(__name__)
@@ -16,16 +17,27 @@ bootstrap = Bootstrap(app)
 
 
 class NameForm(FlaskForm):
-    string = StringField(
+    string = TextAreaField(
         'Paste the html "InventoryView__grid" element and submit',
+        render_kw={"placeholder": 
+            'HTML code: <div class="InventoryView__grid___1y8GFWz"> ...'},
         validators=[DataRequired()])
     submit = SubmitField('Submit')
 
-def makelist(arg):
-    imp=i(arg)
+def makeinventory(arg):
+    imp=inventory(arg)
     table=imp.grouped
 
     return table
+
+def makeproduction(arg):
+    p=production(arg)
+
+    return p
+
+@app.context_processor
+def inject_enumerate():
+    return dict(enumerate=enumerate)
 
 @app.errorhandler(404)
 def page_not_found(e):
@@ -40,29 +52,18 @@ def index():
     element = None
     form = NameForm()
     if form.validate_on_submit():
-        element = makelist(form.string.data)
+        element = makeinventory(form.string.data)
         form.string.data = ''
     return render_template('index.html', form=form, element=element)
-'''
-@app.route('/large.csv')
-def generate_large_csv():
-    
-    form=NameForm()
-    arg=makelist(form.string.data)
 
-    def generate(arg=arg):
-        for row in arg:
-            yield ','.join(row) + '\n'
-    return Response(generate(), mimetype='text/csv')
-'''
-
-@app.route('/stream')
-def streamed_response():
-    def generate():
-        yield 'Hello '
-        yield request.args['name']
-        yield '!'
-    return Response(stream_with_context(generate()))
+@app.route('/production_lines', methods=['GET', 'POST'])
+def production_lines():
+    element = None
+    form = NameForm()
+    if form.validate_on_submit():
+        element=production(form.string.data)
+        form.string.data = ''
+    return render_template('production.html', form=form, element=element)
 
 @app.route('/tutorial')
 def tutorial():

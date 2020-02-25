@@ -3,7 +3,7 @@
 import re
 import csv
 from itertools import zip_longest
-from prodimporter import Importer as importer
+from modules.prodimporter import Importer as importer
 from modules.timeparser import timeparser
 
 with open("testing/prod.txt", "r") as f:
@@ -18,11 +18,13 @@ p = parsed_data
 #print("\n")
 #print(p.grouped_mats)
 #print("p.grouped_times:")
-print(p.grouped_times)
-print("\n")
-print(p.formated_prodtimes)
-print("\n")
+#print(p.grouped_times)
+#print("\n")
+#print(p.formated_prodtimes)
+#print("\n")
 #print(p.formated_queuetimes)
+#print(p.production)
+#print(p.queue)
 
 '''
 with open('out.csv', 'w') as csvfile:
