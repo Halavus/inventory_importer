@@ -22,7 +22,7 @@
         <tr>
             <td style="vertical-align: middle; text-align: center; {{ e.prod["styles"][pair[0]] }} " >{{ e.prod["mats"][pair[0]] }}</td>
             <td>{{ e.prod["units"][pair[0]] }}</td>
-            <td>{{ e.prod["timestamps"][pair[0]] }}</td>
+            <!-- <td>{{ e.prod["timestamps"][pair[0]] }}</td> -->
             <td>{{ e.prod["timers"][pair[0]] }}</td>
         </tr>
         {% endfor %}
@@ -36,7 +36,7 @@
         <tr>
             <td style="vertical-align: middle; text-align: center; {{ e.queue["styles"][pair[0]] }} " >{{ e.queue["mats"][pair[0]] }}</td>
             <td>{{ e.queue["units"][pair[0]] }}</td>
-            <td>{{ e.queue["timestamps"][pair[0]] }}</td>
+            <!-- <td>{{ e.queue["timestamps"][pair[0]] }}</td> -->
             <td>{{ e.queue["timers"][pair[0]] }}</td>
         </tr>
         {% endfor %}

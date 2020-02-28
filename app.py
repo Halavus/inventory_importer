@@ -16,11 +16,20 @@ app.config['SECRET_KEY'] = secret_key
 bootstrap = Bootstrap(app)
 
 
-class NameForm(FlaskForm):
+class InvForm(FlaskForm):
     string = TextAreaField(
         'Paste the html "InventoryView__grid" element and submit',
         render_kw={"placeholder": 
             'HTML code: <div class="InventoryView__grid___1y8GFWz"> ...'},
+        validators=[DataRequired()])
+    submit = SubmitField('Submit')
+
+class ProdForm(FlaskForm):
+    string = TextAreaField(
+        'Paste the html "SiteProductionLines__column___" element and submit',
+        render_kw={"placeholder": 
+            'HTML code:  <div class="SiteProductionLines__column___ij4g8Kg '
+            'SiteProductionLines__columnBase___3eLJ7nE" ...'},
         validators=[DataRequired()])
     submit = SubmitField('Submit')
 
@@ -50,7 +59,7 @@ def internal_server_error(e):
 @app.route('/', methods=['GET', 'POST'])
 def index():
     element = None
-    form = NameForm()
+    form = InvForm()
     if form.validate_on_submit():
         element = makeinventory(form.string.data)
         form.string.data = ''
@@ -59,7 +68,7 @@ def index():
 @app.route('/production_lines', methods=['GET', 'POST'])
 def production_lines():
     element = None
-    form = NameForm()
+    form = ProdForm()
     if form.validate_on_submit():
         element=production(form.string.data)
         form.string.data = ''
