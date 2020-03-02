@@ -19,5 +19,5 @@ function copy(el) {
                         range.select();
                         range.execCommand("copy");
                         }
-    alert("Table copied to clipboard");
+    alert("\nInventory copied to clipboard");
 }

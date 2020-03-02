@@ -39,6 +39,12 @@ def makeinventory(arg):
 
     return table
 
+def checkdata(arg):
+    imp=inventory(arg)
+    check=imp.nodata
+
+    return check 
+
 def makeproduction(arg):
     p=production(arg)
 
@@ -59,11 +65,13 @@ def internal_server_error(e):
 @app.route('/', methods=['GET', 'POST'])
 def index():
     element = None
+    datacheck = False
     form = InvForm()
     if form.validate_on_submit():
+        datacheck=checkdata(form.string.data)
         element = makeinventory(form.string.data)
         form.string.data = ''
-    return render_template('index.html', form=form, element=element)
+    return render_template('index.html', form=form, element=element, datacheck=datacheck)
 
 @app.route('/production_lines', methods=['GET', 'POST'])
 def production_lines():

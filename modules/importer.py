@@ -21,3 +21,8 @@ class Importer:
             return list(zip_longest(fillvalue=fillvalue, *args))
 
         self.grouped = grouper(3, self.match)
+        
+        self.nodata=False
+
+        if self.grouped==[]:
+            self.nodata=True
