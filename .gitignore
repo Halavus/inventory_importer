@@ -9,6 +9,6 @@ favicon_io
 config_infos.txt
 inv.txt
 *.csv
-#testing/
-#*test*.py
+testing/
+*test*.py
 zzz*

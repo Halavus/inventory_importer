@@ -1,5 +1,8 @@
 {% extends "base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
+{% block scripts %}
+<script src="{{url_for('static', filename='copy_table.js')}}"></script>
+{% endblock %}
 
 {% block title %}PrUn Inventory Importer{% endblock %}
 
@@ -14,7 +17,8 @@
 
 {% if element %}
     <p>Here's your inventory:</p>
-    <table class="table table-bordered" style="max-width:20%;">
+    <button onclick="copy( document.getElementById('inv_table') )">Copy table to clipboard</button>
+    <table class="table table-bordered" style="max-width:20%;" id="inv_table">
         {% for i in element %}
         <tr>
             <td style="vertical-align: middle; text-align: center; {{ i[0] }} " >{{ i[1] }}</td>
