@@ -1,8 +1,5 @@
 {% extends "base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
-{% block scripts %}
-<script src="{{url_for('static', filename='copy_table.js')}}"></script>
-{% endblock %}
 
 {% block title %}PrUn Inventory Importer{% endblock %}
 
@@ -26,10 +23,6 @@
         </tr>
         {% endfor %}
 {% else %}
-    {% if datacheck %}
-    <p>No valid data found. Try again or <a href="tutorial">read the short tutorial</a>.</p>
-    {% else %}
-    <a href="tutorial">Read the short tutorial</a>
-    {% endif %}
+    {% include "datacheck.html" %} 
 {% endif %}
 {% endblock %}

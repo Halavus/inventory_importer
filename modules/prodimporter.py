@@ -81,6 +81,8 @@ class Importer:
                 counter += 1
             return lst
 
+        self.nodata=False
+
         o=outputmaker
         
         self.prod = {
@@ -95,3 +97,6 @@ class Importer:
                 "units" : o("mats_units", 2, queue),
                 "timestamps" : o("times", "timestamp", queue),
                 "timers" : o("times", "timer", queue)}
+
+        if mats_units==[]:
+            self.nodata=True

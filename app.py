@@ -39,8 +39,8 @@ def makeinventory(arg):
 
     return table
 
-def checkdata(arg):
-    imp=inventory(arg)
+def checkdata(module, arg):
+    imp=module(arg)
     check=imp.nodata
 
     return check 
@@ -68,7 +68,7 @@ def index():
     datacheck = False
     form = InvForm()
     if form.validate_on_submit():
-        datacheck=checkdata(form.string.data)
+        datacheck=checkdata(inventory, form.string.data)
         element = makeinventory(form.string.data)
         form.string.data = ''
     return render_template('index.html', form=form, element=element, datacheck=datacheck)
@@ -76,11 +76,13 @@ def index():
 @app.route('/production_lines', methods=['GET', 'POST'])
 def production_lines():
     element = None
+    datacheck = False
     form = ProdForm()
     if form.validate_on_submit():
+        datacheck=checkdata(production, form.string.data)
         element=production(form.string.data)
         form.string.data = ''
-    return render_template('production.html', form=form, element=element)
+    return render_template('production.html', form=form, element=element, datacheck=datacheck)
 
 @app.route('/tutorial')
 def tutorial():

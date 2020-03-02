@@ -6,6 +6,7 @@ secret_key.py
 venv
 *.swp
 favicon_io
+favicon.ico
 config_infos.txt
 inv.txt
 *.csv
