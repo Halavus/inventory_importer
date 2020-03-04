@@ -52,7 +52,7 @@ screen_name = '(?<=SCRN: )(?P<screen_name>.*)(?=nSCRNS)'
 # Matches 15,000,000,000,000,000.00, 45.00, 100, 5.00
 # Watch out for the decimals !
 #regex_prun_numbers = '(\d{1,3}(,\d{3})*(\.\d{2})?)'
-regex_prun_numbers = r'(\d{1,3}(,\d{3})*(\.\d{2})?)'
+regex_prun_numbers = r'((\d{1,3}(,\d{3})*(\.\d{2})?)|(\-{2}))'
 rpn=regex_prun_numbers
 
 commodity_data = {
@@ -61,7 +61,7 @@ commodity_data = {
     #ok
     'cx': r'(?<=CX )([A-Z]{2}\d)(?=\nMAT)',
     #ok
-    'last_trade': ''.join([r'(?<=\d\n)', rpn, r'(?=\s[A-Z]{3}[+-]\d)']),
+    'last_trade': ''.join([r'(?<=\d\n)', rpn]),
     #ok
     'average': ''.join([r'(?<= Exchange\n)', rpn, r'(?=\n)']),
     #ok

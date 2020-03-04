@@ -10,20 +10,19 @@ class Importer:
     def __init__(self, data):
         
         self.data=data
-        data=data
-
         dic={}
-        '''
-        for i in regex:               
-            m=re.findall(regex[i], data)
-            dic[i]=m
-        '''
-
+        
         for i in regex:
+            m = []
             matches = re.finditer(regex[i], data)
-            m=[match.group(1) for match in matches]
-            dic[i]=m
-    
+            for match in matches:
+
+                if match.group(1)!=None:
+                    m.append(match.group(1))
+                else:
+                    m.append(match.group(4))
+            
+                dic[i]=m
 
         self.dic=dic
         def compiler(dic=dic):
