@@ -11,6 +11,7 @@
 {{ wtf.quick_form(form) }}
 
 <br>
+{% include "datacheck.html" %} 
 
 {% if element %}
     <p>Here's your inventory:</p>
@@ -22,7 +23,5 @@
             <td>{{ i[2] }}</td>
         </tr>
         {% endfor %}
-{% else %}
-    {% include "datacheck.html" %} 
 {% endif %}
 {% endblock %}

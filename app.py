@@ -7,6 +7,7 @@ from wtforms import TextAreaField, SubmitField
 from wtforms.validators import DataRequired
 from modules.importer import Importer as inventory
 from modules.prodimporter import Importer as production
+from modules.screenimporter import Importer as screen
 from secret_key import secret_key as secret_key
 
 app = Flask(__name__)
@@ -33,9 +34,26 @@ class ProdForm(FlaskForm):
         validators=[DataRequired()])
     submit = SubmitField('Submit')
 
+class ScreenForm(FlaskForm):
+    string = TextAreaField(
+        'Paste your market infos screen',
+        render_kw={"placeholder": 
+            'SCRN: XXX YYY\n'
+            'SCRNS\n'
+            'ADD\n'
+            'FULL\n'
+            'LIC: XYZ\n'
+            '...',
+            "style": 'height: 152px'},
+        validators=[DataRequired()])
+    submit = SubmitField('Submit')
+
 def makeinventory(arg):
     imp=inventory(arg)
-    table=imp.grouped
+    if imp.nodata==True:
+        table = None
+    else:
+        table=imp.grouped
 
     return table
 
@@ -44,11 +62,6 @@ def checkdata(module, arg):
     check=imp.nodata
 
     return check 
-
-def makeproduction(arg):
-    p=production(arg)
-
-    return p
 
 @app.context_processor
 def inject_enumerate():
@@ -69,7 +82,8 @@ def index():
     form = InvForm()
     if form.validate_on_submit():
         datacheck=checkdata(inventory, form.string.data)
-        element = makeinventory(form.string.data)
+        if not datacheck:
+            element = makeinventory(form.string.data)
         form.string.data = ''
     return render_template('index.html', form=form, element=element, datacheck=datacheck)
 
@@ -80,9 +94,21 @@ def production_lines():
     form = ProdForm()
     if form.validate_on_submit():
         datacheck=checkdata(production, form.string.data)
-        element=production(form.string.data)
+        if not datacheck:
+            element=production(form.string.data)
         form.string.data = ''
     return render_template('production.html', form=form, element=element, datacheck=datacheck)
+
+@app.route('/market_infos_screen', methods=['GET', 'POST'])
+def marketinfos():
+    element = None
+    datacheck = False
+    form = ScreenForm()
+    if form.validate_on_submit():
+        datacheck=checkdata(screen, form.string.data)
+        element=screen(form.string.data)
+        form.string.data = ''
+    return render_template('marketinfos.html', form=form, element=element, datacheck=datacheck)
 
 @app.route('/tutorial')
 def tutorial():

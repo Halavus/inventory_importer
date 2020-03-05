@@ -11,7 +11,7 @@ class Importer:
         
         self.data=data
         dic={}
-        
+       
         for i in regex:
             m = []
             matches = re.finditer(regex[i], data)
@@ -26,23 +26,30 @@ class Importer:
 
         self.dic=dic
         def compiler(dic=dic):
-            
             element = {}
+            
+            try:
+                for n in range(len(dic["ticker"])):
+                    infos = {}
+                    identifier = dic["ticker"][n-1]+"."+dic["cx"][n-1]
+                    for i in dic:
+                        infos[i]=dic[i][n-1]
+                        element[identifier]=infos
 
-            for n in range(len(dic["ticker"])):
-                infos = {}
-                identifier = dic["ticker"][n-1]+"."+dic["cx"][n-1]
-                
-                for i in dic:
-                    infos[i]=dic[i][n-1]
-                    #element[i]=dic[i][n]
-                    element[identifier]=infos
+            except Exception:
+                pass
 
             return element
-
-        self.element=compiler()
-
-        self.nodata=False
         
-        if self.element==[]:
+        def iferror(func, *args, **kw):
+            try:
+                func(*args, **kw)
+                return True
+            except Exception:
+                return False
+        
+        self.element=compiler()
+        
+        self.nodata=False
+        if self.element=={}:
             self.nodata=True

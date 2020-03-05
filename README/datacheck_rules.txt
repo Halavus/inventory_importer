@@ -1,0 +1,12 @@
+if
+element==none and datacheck==False
+-> link
+
+if
+element==None and datacheck==True
+-> blabla + link
+
+if
+element==True and datacheck==False
+-> ø
+-> +results
