@@ -59,7 +59,7 @@ rpn=regex_prun_numbers
 commodity_data = {
     'ticker': r'(?<=MAT )(H2O|HE3|NV1|NV2|[A-Z]{1,3})(?=\nCXPC)',
     'cx': r'(?<=CX )([A-Z]{2}\d)(?=\nMAT)',
-    'Last_Trade': ''.join([r'(?<=\d\n)', rpn]),
+    'last_trade': ''.join([r'(?<=\d\n)', rpn]),
     'average': ''.join([r'(?<= Exchange\n)', rpn, r'(?=\n)']),
     'high': ''.join([r'(?<= Average\n)', rpn, r'(?=\n)']),
     'all_time_high': ''.join([r'(?<=\nHigh\n)', rpn, r'(?=\n)']),
