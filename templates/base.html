@@ -9,25 +9,8 @@
 {% endblock %}
 
 {% block navbar %}
-<div class="navbar navbar-inverse" role="navigation">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="/">PrUn Inventory Importer</a>
-        </div>
-        <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-                <li><a href="/market_infos_screen">Market Infos Screen</a>
-                <li><a href="/production_lines">Production Lines</a>
-                <li><a href="/tutorial">Tutorial</a></li>
-            </ul>
-        </div>
-    </div>
+<div class='container'>
+{{ nav.impnavbar.render() }}
 </div>
 {% endblock %}
 
@@ -35,7 +18,15 @@
 <div class="container">
     {% block page_content %}{% endblock %}
 </div>
-{% endblock %}
+<!--
+<div class="container" style="position: fixed; bottom: 0; width: 100%">
+{% block footer %}
+<footer>Fan site of MMO <a href='https://prosperousuniverse.com/'>Prosperous Universe</a>
+Created by Halavus, powered by <a href='https://palletsprojects.com/p/flask/'>Python-Flask</a></footer>
+{% endblock footer %}
+</div>
+-->
+{% endblock content %}
 
 {% block scripts %}
 {{ super() }}

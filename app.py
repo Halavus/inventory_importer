@@ -3,6 +3,8 @@ from flask import Response
 from flask import stream_with_context, request
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
+from flask_nav import Nav
+from flask_nav.elements import Navbar, View, Subgroup, Separator
 from wtforms import TextAreaField, SubmitField
 from wtforms.validators import DataRequired
 from modules.importer import Importer as inventory
@@ -75,8 +77,22 @@ def page_not_found(e):
 def internal_server_error(e):
     return render_template('500.html'), 500
 
-@app.route('/', methods=['GET', 'POST'])
-def index():
+nav = Nav()
+
+@nav.navigation()
+def impnavbar():
+    return Navbar(
+            'PrUn Data Importer',
+            View('Market Infos Screen', 'marketinfos'),
+            View('Inventory Importer', 'inventory'),
+            View('Production Lines', 'productionlines'),
+            Subgroup('Turorials',
+                View('Inventory & Prod. Lines Importers', 'tutorial_importers'),
+                View('Market Infos Screen', 'tutorial_market'))
+            )
+
+@app.route('/inventory', methods=['GET', 'POST'])
+def inventory():
     element = None
     datacheck = False
     form = InvForm()
@@ -85,13 +101,13 @@ def index():
         if not datacheck:
             element = makeinventory(form.string.data)
         form.string.data = ''
-    return render_template('index.html', 
+    return render_template('inventory.html', 
             form=form, 
             element=element, 
             datacheck=datacheck)
 
-@app.route('/production_lines', methods=['GET', 'POST'])
-def production_lines():
+@app.route('/productionlines', methods=['GET', 'POST'])
+def productionlines():
     element = None
     datacheck = False
     form = ProdForm()
@@ -110,16 +126,18 @@ class JsonForm(FlaskForm):
         'id': 'jsonstring', 
         'style': 'height: 100px'})
 
-@app.route('/market_infos_screen', methods=['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/marketinfos', methods=['GET', 'POST'])
 def marketinfos():
     element = None
     datacheck = False
     form = ScreenForm()
     jsonstring = JsonForm()
     if form.validate_on_submit():
-        #datacheck=checkdata(screen, form.string.data)
-        element=screen(form.string.data)
-        jsonstring.string.data = element.json
+        datacheck=checkdata(screen, form.string.data)
+        if not datacheck:
+            element=screen(form.string.data)
+            jsonstring.string.data = element.json
         form.string.data = ''
     return render_template('marketinfos.html', 
             form=form, 
@@ -127,9 +145,14 @@ def marketinfos():
             jsonstring=jsonstring, 
             datacheck=datacheck)
 
-@app.route('/tutorial')
-def tutorial():
-    return render_template('tutorial.html')
+@app.route('/tutorial_importers')
+def tutorial_importers():
+    return render_template('tutorial_importers.html')
+@app.route('/tutorial_market')
+def tutorial_market():
+    return render_template('tutorial_market.html')
+
+nav.init_app(app)
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')

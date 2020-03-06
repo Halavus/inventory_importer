@@ -19,7 +19,7 @@ function copy(el) {
                         range.select();
                         range.execCommand("copy");
                         }
-    alert("\nInventory copied to clipboard");
+    alert("Table copied to clipboard");
 }
 
 function copyField(id) {

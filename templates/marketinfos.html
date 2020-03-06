@@ -5,19 +5,20 @@
 
 {% block page_content %}
 <div class="page-header">
-    <h1>Hello, manufacturer!</h1>
+    <h1>Hello, trader!</h1>
 </div>
 
 {{ wtf.quick_form(form) }}
 
 <br>
 
-{% include "datacheck.html" %}
+{% include "datacheck_market.html" %}
 
 {% if element %}
 {% set e=element %}
     <button onclick='copyField("jsonstring")'>Copy json string of all data to clipboard</button>
     {{ wtf.quick_form(jsonstring) }}
+    </br>
     <!-- Testing data
 
     <h4>Here's the data:</h4>
@@ -27,9 +28,9 @@
     -->
     {% for dic in e.element %}
     {% set id=dic.join(["'", "'"]) %}
-    </br>
-    <button onclick='copy( document.getElementById({{ id }}) )'>Copy {{ dic }} to clipboard</button>
-    <table class="table table-bordered" style="max-width:20%;" id={{ dic }}>
+    <div class="pull-left" style="padding-left: 10px; padding-right: 10px;">
+    <button style="width: 100%;" onclick='copy( document.getElementById({{ id }}) )'>Copy {{ dic }} to clipboard</button>
+    <table class="table table-bordered" style="min-width:20%;" id={{ dic }}>
         <th colspan="2" text-align="center">{{ dic }}</th>
         {% for i in e.element[dic] %}
         <tr>
@@ -38,6 +39,7 @@
         </tr>
         {% endfor %}
     </table>
+    </div>
     {% endfor %}
 {% endif %}
 {% endblock %}
