@@ -44,7 +44,7 @@ class ScreenForm(FlaskForm):
             'FULL\n'
             'LIC: XYZ\n'
             '...',
-            "style": 'height: 152px'},
+            'style': 'height: 152px'},
         validators=[DataRequired()])
     submit = SubmitField('Submit')
 
@@ -85,7 +85,10 @@ def index():
         if not datacheck:
             element = makeinventory(form.string.data)
         form.string.data = ''
-    return render_template('index.html', form=form, element=element, datacheck=datacheck)
+    return render_template('index.html', 
+            form=form, 
+            element=element, 
+            datacheck=datacheck)
 
 @app.route('/production_lines', methods=['GET', 'POST'])
 def production_lines():
@@ -97,18 +100,32 @@ def production_lines():
         if not datacheck:
             element=production(form.string.data)
         form.string.data = ''
-    return render_template('production.html', form=form, element=element, datacheck=datacheck)
+    return render_template('production.html', 
+            form=form, 
+            element=element, 
+            datacheck=datacheck)
+
+class JsonForm(FlaskForm):
+    string = TextAreaField('', render_kw={
+        'id': 'jsonstring', 
+        'style': 'height: 100px'})
 
 @app.route('/market_infos_screen', methods=['GET', 'POST'])
 def marketinfos():
     element = None
     datacheck = False
     form = ScreenForm()
+    jsonstring = JsonForm()
     if form.validate_on_submit():
         #datacheck=checkdata(screen, form.string.data)
         element=screen(form.string.data)
+        jsonstring.string.data = element.json
         form.string.data = ''
-    return render_template('marketinfos.html', form=form, element=element, datacheck=datacheck)
+    return render_template('marketinfos.html', 
+            form=form, 
+            element=element, 
+            jsonstring=jsonstring, 
+            datacheck=datacheck)
 
 @app.route('/tutorial')
 def tutorial():
