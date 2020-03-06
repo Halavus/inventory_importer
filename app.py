@@ -105,7 +105,7 @@ def marketinfos():
     datacheck = False
     form = ScreenForm()
     if form.validate_on_submit():
-        datacheck=checkdata(screen, form.string.data)
+        #datacheck=checkdata(screen, form.string.data)
         element=screen(form.string.data)
         form.string.data = ''
     return render_template('marketinfos.html', form=form, element=element, datacheck=datacheck)

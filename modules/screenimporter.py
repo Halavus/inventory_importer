@@ -2,6 +2,7 @@
 
 import re
 from itertools import zip_longest
+import json
 from modules.regex import commodity_data as regex 
 
 
@@ -9,7 +10,9 @@ class Importer:
 
     def __init__(self, data):
         
-        self.data=data
+        data=data.replace('\r\n', '\n')
+
+        self.data=repr(data)
         dic={}
        
         for i in regex:
@@ -31,9 +34,19 @@ class Importer:
             try:
                 for n in range(len(dic["ticker"])):
                     infos = {}
-                    identifier = dic["ticker"][n-1]+"."+dic["cx"][n-1]
+                    cx = dic["cx"][n-1]
+                    identifier = dic["ticker"][n-1]+"."+cx
                     for i in dic:
                         infos[i]=dic[i][n-1]
+                        element[identifier]=infos
+                    if cx=="IC1":
+                        infos["currency"]="ICA"
+                        element[identifier]=infos
+                    elif cx=="NC1":
+                        infos["currency"]="NCC"
+                        element[identifier]=infos
+                    else:
+                        infos["currency"]="CIS"
                         element[identifier]=infos
 
             except Exception:
@@ -48,7 +61,9 @@ class Importer:
             except Exception:
                 return False
         
-        self.element=compiler()
+        self.element = compiler()
+
+        self.json = json.dumps(self.element)
         
         self.nodata=False
         if self.element=={}:
