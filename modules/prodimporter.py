@@ -10,10 +10,12 @@ class Importer:
     def __init__(self, data):
 
         # self.data for testing purposes
-        #self.data = data
+        self.data = data
         
         # colors, mat, unit(s)
         mats_import = re.findall(regex["mat"], data)
+        # Testing
+        self.mats = mats_import
 
         # completion times prod & queue
         prodtimes_import = re.findall(regex["prodtime"], data)
@@ -98,5 +100,5 @@ class Importer:
                 "timestamps" : o("times", "timestamp", queue),
                 "timers" : o("times", "timer", queue)}
 
-        if mats_units==[]:
+        if prodtimes_import==[]:
             self.nodata=True

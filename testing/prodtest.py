@@ -7,7 +7,7 @@ from itertools import zip_longest
 from modules.prodimporter import Importer as importer
 from modules.timeparser import timeparser
 
-with open("testing/prod.txt", "r") as f:
+with open("inv.txt", "r") as f:
     inputs=f.readlines()
 
 inputs = inputs[0]
