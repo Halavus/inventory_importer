@@ -7,8 +7,8 @@ from flask_nav import Nav
 from flask_nav.elements import Navbar, View, Subgroup, Separator
 from wtforms import TextAreaField, SubmitField
 from wtforms.validators import DataRequired
-from modules.importer import Importer as inventory
-from modules.prodimporter import Importer as production
+from modules.importer import Importer as inv_importer
+from modules.prodimporter import Importer as prod_importer
 from modules.screenimporter import Importer as screen
 from secret_key import secret_key as secret_key
 
@@ -51,7 +51,7 @@ class ScreenForm(FlaskForm):
     submit = SubmitField('Submit')
 
 def makeinventory(arg):
-    imp=inventory(arg)
+    imp=inv_importer(arg)
     if imp.nodata==True:
         table = None
     else:
@@ -97,7 +97,7 @@ def inventory():
     datacheck = False
     form = InvForm()
     if form.validate_on_submit():
-        datacheck=checkdata(inventory, form.string.data)
+        datacheck=checkdata(inv_importer, form.string.data)
         if not datacheck:
             element = makeinventory(form.string.data)
         form.string.data = ''
@@ -112,9 +112,9 @@ def productionlines():
     datacheck = False
     form = ProdForm()
     if form.validate_on_submit():
-        datacheck=checkdata(production, form.string.data)
+        datacheck=checkdata(prod_importer, form.string.data)
         if not datacheck:
-            element=production(form.string.data)
+            element=prod_importer(form.string.data)
         form.string.data = ''
     return render_template('production.html', 
             form=form, 
