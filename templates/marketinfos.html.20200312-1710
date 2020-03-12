@@ -20,20 +20,18 @@
     {{ wtf.quick_form(jsonstring) }}
     </br>
     <!-- Testing data
+
     <h4>Here's the data:</h4>
     {{ e.data }}
     <h4>e.element</h4>
     {{ e.element }}
     -->
-
-    <div class="pull-left" style="padding-left: 10px; padding-right: 10px;">
-    <button style="width: 100%;" onclick='copy( document.getElementById("big_table") )'>Copy table to clipboard</button>
-    <table class="table table-bordered" style="min-width:20%;" id="big_table">
-        {% for label in e.element %}
-            {% set header=label %}
-        <th colspan="2" text-align="center">{{ dic }}</th>
     {% for dic in e.element %}
-    {% set row=dic %}
+    {% set id=dic.join(["'", "'"]) %}
+    <div class="pull-left" style="padding-left: 10px; padding-right: 10px;">
+    <button style="width: 100%;" onclick='copy( document.getElementById({{ id }}) )'>Copy {{ dic }} to clipboard</button>
+    <table class="table table-bordered" style="min-width:20%;" id={{ dic }}>
+        <th colspan="2" text-align="center">{{ dic }}</th>
         {% for i in e.element[dic] %}
         <tr>
             <td>{{ i }}</td>

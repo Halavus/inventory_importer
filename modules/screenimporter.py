@@ -8,14 +8,15 @@ from modules.regex import commodity_data as regex
 
 class Importer:
 
-    def __init__(self, data):
+    def __init__(self, data, debug=False):
 
         data=data.replace('\r\n', '\n')
 
-        self.data=repr(data)
         dic={}
 
         for i in regex:
+            "Structure: {[{infos}]}"
+
             m = []
             matches = re.finditer(regex[i], data)
             for match in matches:
@@ -27,44 +28,126 @@ class Importer:
 
                 dic[i]=m
 
-        self.dic=dic
         def compiler(dic=dic):
-            "Structure: {ticker.cx: {label: info}}"
-            "== {identifier: {label: info}}"
+            "New structure: {ticker: {cx.label: info}}"
+            "            == {identifier: {cx.label: info}}"
 
             element = {}
+            headers = ["Ticker"]
 
             try:
+                "try in order to return an empty dic for data checking"
+
                 for n in range(len(dic["ticker"])):
                     infos = {}
                     cx = dic["cx"][n-1]
-                    identifier = dic["ticker"][n-1]+"."+cx
+                    identifier = dic["ticker"][n-1]
                     for i in dic:
-                        infos[i]=dic[i][n-1]
-                        element[identifier]=infos
+                        id2=str(cx)+"."+str(i)
+                        infos[id2]=dic[i][n-1]
+                        if id2 in headers:
+                            pass
+                        else:
+                            headers.append(id2)
+                        try:
+                            if element[identifier]:
+                                element[identifier][id2]=infos[id2]
+                        except Exception:
+                            element[identifier]=infos
+
+                    ''' Do currencies have to be present in this dataset?
+                    if yes correct the code...
+
                     if cx=="IC1":
-                        infos["currency"]="ICA"
-                        element[identifier]=infos
+                        element[identifier]["currency"]="ICA"
                     elif cx=="NC1":
-                        infos["currency"]="NCC"
-                        element[identifier]=infos
+                        element[identifier]["currency"]="NCC"
                     else:
-                        infos["currency"]="CIS"
-                        element[identifier]=infos
+                        element[identifier]["currency"]="CIS"
+                    '''
 
             except Exception:
                 pass
 
+            return element, headers
+
+        def cleaner(element=compiler()[0], headers=compiler()[1]):
+            rm = ["cx", "ticker"]
+            for dic in element:
+                for k in list(element[dic]):
+                    for s in rm:
+                        if s in k:
+                            del element[dic][k]
+
+            headers[:] = [h for h in headers if h[4:] not in rm]
+
+            element["headers"]=headers
+
             return element
 
-        def iferror(func, *args, **kw):
-            try:
-                func(*args, **kw)
-                return True
-            except Exception:
-                return False
+        element = cleaner()
+        self.element = element
 
-        self.element = compiler()
+        # This nice fill func should be copied in a private package
+        def fill(lst, index, add, fillvalue=None):
+            '''Fills a list with a add value based on list index'''
+            '''Let the value in place if present'''
+            for n in range(index):
+                try:
+                    if lst[n]:
+                        pass
+                except Exception:
+                    lst.append(fillvalue)
+            try:
+                if lst[index]:
+                    pass
+                else:
+                    lst[index]=add
+            except Exception:
+                if index==len(lst):
+                    #if check not mandatory
+                    lst.append(add)
+            return lst
+
+        matrix = [element["headers"]]
+
+        linenumber=1
+        for row in element:
+            if row=="headers":
+                pass
+            else:
+                matrix.append([])
+                matrix[linenumber].append(row)
+                for label in element[row]:
+                    if debug:
+                        print(element[row])
+                        print("label: "+label)
+                    for header in matrix[0][1:]:
+                        if debug:
+                            print("header: "+header)
+                        if label==header:
+                            if debug:
+                                print("linenumber: "+str(linenumber))
+                                print("matrix line: "+str(matrix[linenumber]))
+                                print("index header: "+str(matrix[0].index(header)))
+                                print(element[row][label])
+
+                                #use tuples in matrix for datacheck
+                                add=(header, element[row][label])
+                            else:
+                                add=element[row][label]
+
+                            fill(lst=matrix[linenumber],
+                                 index=matrix[0].index(header),
+                                 add=add,
+                                 fillvalue=None)
+                        else:
+                            pass
+                if debug:
+                    print(matrix)
+                linenumber+=1
+
+        self.matrix=matrix
 
         self.json = json.dumps(self.element)
 

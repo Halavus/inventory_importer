@@ -15,31 +15,36 @@
 {% include "datacheck_market.html" %}
 
 {% if element %}
-{% set e=element %}
+{% set matrix=element.matrix %}
+{% set m=matrix %}
     <button onclick='copyField("jsonstring")'>Copy json string of all data to clipboard</button>
     {{ wtf.quick_form(jsonstring) }}
     </br>
     <!-- Testing data
-
     <h4>Here's the data:</h4>
-    {{ e.data }}
     <h4>e.element</h4>
-    {{ e.element }}
     -->
-    {% for dic in e.element %}
-    {% set id=dic.join(["'", "'"]) %}
-    <div class="pull-left" style="padding-left: 10px; padding-right: 10px;">
-    <button style="width: 100%;" onclick='copy( document.getElementById({{ id }}) )'>Copy {{ dic }} to clipboard</button>
-    <table class="table table-bordered" style="min-width:20%;" id={{ dic }}>
-        <th colspan="2" text-align="center">{{ dic }}</th>
-        {% for i in e.element[dic] %}
+
+    <div class="pull-left">
+    <button style="width: 20%;" onclick='copy( document.getElementById("big_table") )'>Copy table to clipboard</button>
+    <table class="table table-bordered" style="min-width:20%;" id="big_table">
         <tr>
-            <td>{{ i }}</td>
-            <td>{{ e.element[dic][i] }}</td>
+        {% for header in m[0] %}
+		<th>{{ header }}</th>
+	{% endfor %}
+	</tr>	
+    {% for mat in m[1:] %}
+        <tr>
+        {% for i in mat	%}
+	{% if i == None %}
+		<td></td>
+	{% else %}
+        	<td>{{ i }}</td>
+	{% endif %}
+	{% endfor %}
         </tr>
-        {% endfor %}
+    {% endfor %}
     </table>
     </div>
-    {% endfor %}
 {% endif %}
 {% endblock %}

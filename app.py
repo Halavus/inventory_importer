@@ -22,7 +22,7 @@ bootstrap = Bootstrap(app)
 class InvForm(FlaskForm):
     string = TextAreaField(
         'Paste the html "InventoryView__grid" element and submit',
-        render_kw={"placeholder": 
+        render_kw={"placeholder":
             'HTML code: <div class="InventoryView__grid___1y8GFWz"> ...'},
         validators=[DataRequired()])
     submit = SubmitField('Submit')
@@ -30,7 +30,7 @@ class InvForm(FlaskForm):
 class ProdForm(FlaskForm):
     string = TextAreaField(
         'Paste the html "SiteProductionLines__column___" element and submit',
-        render_kw={"placeholder": 
+        render_kw={"placeholder":
             'HTML code:  <div class="SiteProductionLines__column___ij4g8Kg '
             'SiteProductionLines__columnBase___3eLJ7nE" ...'},
         validators=[DataRequired()])
@@ -39,7 +39,7 @@ class ProdForm(FlaskForm):
 class ScreenForm(FlaskForm):
     string = TextAreaField(
         'Paste your market infos screen',
-        render_kw={"placeholder": 
+        render_kw={"placeholder":
             'SCRN: XXX YYY\n'
             'SCRNS\n'
             'ADD\n'
@@ -63,7 +63,7 @@ def checkdata(module, arg):
     imp=module(arg)
     check=imp.nodata
 
-    return check 
+    return check
 
 @app.context_processor
 def inject_enumerate():
@@ -101,9 +101,9 @@ def inventory():
         if not datacheck:
             element = makeinventory(form.string.data)
         form.string.data = ''
-    return render_template('inventory.html', 
-            form=form, 
-            element=element, 
+    return render_template('inventory.html',
+            form=form,
+            element=element,
             datacheck=datacheck)
 
 @app.route('/productionlines', methods=['GET', 'POST'])
@@ -116,9 +116,9 @@ def productionlines():
         if not datacheck:
             element=prod_importer(form.string.data)
         form.string.data = ''
-    return render_template('production.html', 
-            form=form, 
-            element=element, 
+    return render_template('production.html',
+            form=form,
+            element=element,
             datacheck=datacheck)
 
 class JsonForm(FlaskForm):
@@ -139,10 +139,10 @@ def marketinfos():
             element=screen(form.string.data)
             jsonstring.string.data = element.json
         form.string.data = ''
-    return render_template('marketinfos.html', 
-            form=form, 
-            element=element, 
-            jsonstring=jsonstring, 
+    return render_template('marketinfos.html',
+            form=form,
+            element=element,
+            jsonstring=jsonstring,
             datacheck=datacheck)
 
 @app.route('/tutorial_importers')
@@ -165,10 +165,10 @@ def test():
             element=screen(form.string.data)
             jsonstring.string.data = element.json
         form.string.data = ''
-    return render_template('test.html', 
-            form=form, 
-            element=element, 
-            jsonstring=jsonstring, 
+    return render_template('test.html',
+            form=form,
+            element=element,
+            jsonstring=jsonstring,
             datacheck=datacheck)
 
 
