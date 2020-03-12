@@ -148,9 +148,29 @@ def marketinfos():
 @app.route('/tutorial_importers')
 def tutorial_importers():
     return render_template('tutorial_importers.html')
+
 @app.route('/tutorial_market')
 def tutorial_market():
     return render_template('tutorial_market.html')
+
+@app.route('/test', methods=['GET', 'POST'])
+def test():
+    element = None
+    datacheck = False
+    form = ScreenForm()
+    jsonstring = JsonForm()
+    if form.validate_on_submit():
+        datacheck=checkdata(screen, form.string.data)
+        if not datacheck:
+            element=screen(form.string.data)
+            jsonstring.string.data = element.json
+        form.string.data = ''
+    return render_template('test.html', 
+            form=form, 
+            element=element, 
+            jsonstring=jsonstring, 
+            datacheck=datacheck)
+
 
 nav.init_app(app)
 

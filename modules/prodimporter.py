@@ -11,7 +11,7 @@ class Importer:
 
         # self.data for testing purposes
         self.data = data
-        
+
         # colors, mat, unit(s)
         mats_import = re.findall(regex["mat"], data)
         # Testing
@@ -20,7 +20,7 @@ class Importer:
         # completion times prod & queue
         prodtimes_import = re.findall(regex["prodtime"], data)
         prodtimes_formated = [i.replace("<span>in ", "") for i in prodtimes_import]
-        
+
         # progress prod
         progress = re.findall(regex["progress"], data)
 
@@ -86,7 +86,7 @@ class Importer:
         self.nodata=False
 
         o=outputmaker
-        
+
         self.prod = {
                 "styles" : o("mats_units", 0, production),
                 "mats" : o("mats_units", 1, production),
@@ -101,4 +101,4 @@ class Importer:
                 "timers" : o("times", "timer", queue)}
 
         if prodtimes_import==[]:
-            self.nodata=True
+             self.nodata=True

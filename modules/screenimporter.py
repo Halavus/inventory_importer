@@ -3,18 +3,18 @@
 import re
 from itertools import zip_longest
 import json
-from modules.regex import commodity_data as regex 
+from modules.regex import commodity_data as regex
 
 
 class Importer:
 
     def __init__(self, data):
-        
+
         data=data.replace('\r\n', '\n')
 
         self.data=repr(data)
         dic={}
-       
+
         for i in regex:
             m = []
             matches = re.finditer(regex[i], data)
@@ -24,13 +24,16 @@ class Importer:
                     m.append(match.group(1))
                 else:
                     m.append(match.group(4))
-            
+
                 dic[i]=m
 
         self.dic=dic
         def compiler(dic=dic):
+            "Structure: {ticker.cx: {label: info}}"
+            "== {identifier: {label: info}}"
+
             element = {}
-            
+
             try:
                 for n in range(len(dic["ticker"])):
                     infos = {}
@@ -53,18 +56,18 @@ class Importer:
                 pass
 
             return element
-        
+
         def iferror(func, *args, **kw):
             try:
                 func(*args, **kw)
                 return True
             except Exception:
                 return False
-        
+
         self.element = compiler()
 
         self.json = json.dumps(self.element)
-        
+
         self.nodata=False
         if self.element=={}:
             self.nodata=True
