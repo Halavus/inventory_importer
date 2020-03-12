@@ -17,7 +17,7 @@ regexcolor2 = separator.join((regexcolor_chrome, regexcolor_firefox))
 regexcolor = regexcolor_chrome+separator+regexcolor_firefox
 
 matches_mat = ["H2O", "HE3", "NV1", "NV2", "[A-Z]+"]
-startmat = '(?<=<span class="MaterialIcon__ticker___1qLDE5z">)'
+startmat = '(?<=<span class="ColoredIcon__label___j9bHRXy">)'
 startamount = ('(?<=<div class="MaterialIcon__indicator___2QhPuFO'
                ' MaterialIcon__type-very-small___kE8NFjh">)')
 
