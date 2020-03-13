@@ -13,3 +13,5 @@ inv.txt
 testing/
 *test*.py
 zzz*
+files/*
+!.keepdir
