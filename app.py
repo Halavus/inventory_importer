@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, url_for
 from flask import Response
 from flask import stream_with_context, request
 from flask_bootstrap import Bootstrap
@@ -11,6 +11,8 @@ from modules.importer import Importer as inv_importer
 from modules.prodimporter import Importer as prod_importer
 from modules.screenimporter import Importer as screen
 from secret_key import secret_key as secret_key
+import hashlib
+import json
 
 app = Flask(__name__)
 
@@ -64,6 +66,7 @@ def checkdata(module, arg):
     check=imp.nodata
 
     return check
+
 
 @app.context_processor
 def inject_enumerate():
@@ -123,7 +126,7 @@ def productionlines():
 
 class JsonForm(FlaskForm):
     string = TextAreaField('', render_kw={
-        'id': 'jsonstring', 
+        'id': 'jsonstring',
         'style': 'height: 100px'})
 
 @app.route('/', methods=['GET', 'POST'])
@@ -133,16 +136,24 @@ def marketinfos():
     datacheck = False
     form = ScreenForm()
     jsonstring = JsonForm()
+    filepath=""
     if form.validate_on_submit():
         datacheck=checkdata(screen, form.string.data)
         if not datacheck:
             element=screen(form.string.data)
             jsonstring.string.data = element.json
+
+            h = hashlib.new('sha224', json.dumps(element.json).encode('utf-8'))
+            h = h.hexdigest()
+            filepath = 'files/'+h+'.json'
+            with open(filepath, 'w') as f:
+                f.write(str(element.json))
         form.string.data = ''
     return render_template('marketinfos.html',
             form=form,
             element=element,
             jsonstring=jsonstring,
+            filepath=filepath,
             datacheck=datacheck)
 
 @app.route('/tutorial_importers')
