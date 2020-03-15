@@ -37,7 +37,7 @@ class Importer:
         queue_times = []
 
         for tup in grouped_times:
-            
+
             dic = {}
 
             times = timeparser(tup[0])
