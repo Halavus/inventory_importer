@@ -17,16 +17,14 @@
 {% if element %}
 {% set matrix=element.matrix %}
 {% set m=matrix %}
-    <button onclick='copyField("jsonstring")'>Copy json string of all data to clipboard</button>
     {{ wtf.quick_form(jsonstring) }}
-    </br>
-    <!-- Testing data
-    <h4>Here's the data:</h4>
-    <h4>e.element</h4>
-    -->
+    <button class="btn btn-info" onclick='copyField("jsonstring")'>Copy json string of all data to clipboard</button>
+    <hr>
 
-    <div class="pull-left">
-    <button style="width: 20%;" onclick='copy( document.getElementById("big_table") )'>Copy table to clipboard</button>
+    <div>    
+    <button class="btn btn-success" data-toggle="collapse" data-target="#screen-data">Show/hide table</button>
+    <button class="btn btn-info" onclick='copy( document.getElementById("big_table") )'>Copy table to clipboard</button>
+    <div class="pull-left collapse" id="screen-data" style="padding-top: 15px;">
     <table class="table table-bordered" style="min-width:20%;" id="big_table">
         <tr>
         {% for header in m[0] %}
@@ -46,5 +44,14 @@
     {% endfor %}
     </table>
     </div>
+    </div>
+    
+    <div style="padding-top: 10px;">
+    <p><b>Tool</b>: Redirect to the Shipping Profits page to 
+    <a href={{ link }} class="btn btn-warning">calculate shipping profit</a>
+    based on this screen import.
+    </p>
+    </div>
+
 {% endif %}
 {% endblock %}

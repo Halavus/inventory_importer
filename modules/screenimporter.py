@@ -1,7 +1,6 @@
 #!py3
 
 import re
-from itertools import zip_longest
 import json
 from modules.regex import commodity_data as regex
 
@@ -51,7 +50,7 @@ class Importer:
                             headers.append(id2)
                         try:
                             if element[identifier]:
-                                element[identifier][id2]=infos[id2]
+                                element[identifier][id2]=infos[id2].replace(",", "")
                         except Exception:
                             element[identifier]=infos
 
@@ -152,5 +151,5 @@ class Importer:
         self.json = json.dumps(self.element)
 
         self.nodata=False
-        if self.element=={}:
+        if self.element=={"headers": ["Ticker"]}:
             self.nodata=True
