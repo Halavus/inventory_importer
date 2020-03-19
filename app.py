@@ -97,6 +97,8 @@ def marketinfos():
     datacheck = False
     form = ScreenForm()
     jsonstring = JsonForm()
+    # Remove Submit btn from JsonForm
+    jsonstring.submit = "hello"
     link = ""
     json_filepath = ""
 
