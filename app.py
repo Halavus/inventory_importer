@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, session
+from flask import Flask, render_template, url_for, session, send_from_directory
 from flask_bootstrap import Bootstrap
 from flask_nav import Nav
 from flask_nav.elements import Navbar, View, Subgroup
@@ -10,7 +10,7 @@ from modules.importer import Importer as inv_importer
 from modules.prodimporter import Importer as prod_importer
 from modules.screenimporter import Importer as screen
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='')
 
 app.config['SECRET_KEY'] = secret_key
 
@@ -134,6 +134,11 @@ def shippingprofits():
     messages = session["messages"]
     link = profitredirect(messages)
     return render_template('shippingprofits.html', link=link)
+
+
+@app.route('/files/<path:path>')
+def send_file(path):
+    return send_from_directory('files', path, as_attachment=True)
 
 
 @app.route('/tutorial_importers')
