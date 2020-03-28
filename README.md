@@ -11,4 +11,4 @@ Installation (linux)
 3. Install python dependencies `pip install -r requirements.txt`
 4. Edit `.env_to_edit` with your secret key and server name. Rename or copy this file to `.env`
 5. Run `git init` if not already done.
-6. Server startup with `py wsgi.py`
+6. Webapp startup with `py wsgi.py`
