@@ -16,3 +16,4 @@ zzz*
 files/*
 !.keepdir
 fillfunc.py
+.env
