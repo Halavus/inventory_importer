@@ -15,3 +15,4 @@ testing/
 zzz*
 files/*
 !.keepdir
+fillfunc.py
