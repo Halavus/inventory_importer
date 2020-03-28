@@ -1,0 +1,32 @@
+{% extends "bootstrap/base.html" %}
+
+{% block title %}PrUn Data Importer {{ name }}{% endblock %}
+
+{% block head %}
+{{ super() }}
+<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+<link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+{% endblock %}
+
+{% block navbar %}
+<div class='container'>
+{{ nav.impnavbar.render() }}
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    {% block page_content %}{% endblock %}
+</div>
+<!--
+{% block footer %}
+<footer class="page-footer font-small grey pt-4">Fan site of MMO <a href='https://prosperousuniverse.com/'>Prosperous Universe</a>
+Created by Halavus, powered by <a href='https://palletsprojects.com/p/flask/'>Python-Flask</a></footer>
+{% endblock footer %}
+-->
+{% endblock content %}
+
+{% block scripts %}
+{{ super() }}
+<script src="{{url_for('static', filename='copy_buttons.js')}}"></script>
+{% endblock %}

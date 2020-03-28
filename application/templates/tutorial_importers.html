@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}PrUn Inventory Importer Tutorial{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <h1>How to import an inventory?</h1>
+</div>
+<div class="page-content">
+    <p>Right click on the first item of the desired inventory (base, ship, etc.) and select "Inspect". Scroll up a bit and right click on the "&lt;div class="InventoryView__grid___XXXX"&gt;" element. Hover copy.</p>
+    <p>On Chrome: select "Copy Element"</br>On Firefox: select "Copy Inner HTML"</p>
+    <p>Paste the string in the field and submit.</p>
+    <p>You should get a printed table as follow:</p>
+    <table class="table table-bordered" style="max-width:20%;">
+        <tr>
+            <td>MAT Ticker</td>
+            <td>Amount</td>
+        </tr>
+    </table>
+    <p>Example:</p>
+    <table class="table table-bordered" style="max-width:20%;">
+        <tr>
+            <td>BHE</td>
+            <td>12</td>
+        </tr>
+        <tr>
+            <td>DW</td>
+            <td>134</td>
+        </tr>
+    </table>
+    </br>
+    <p>Copy/paste the table in your favorite spreadsheet...</p>
+    <p>The same procedure applies to <a href="/production_lines">Production Lines</a>, with the elements described on that page. Currently working for one production line at a time...</p>
+    <p>If something isn't working for you or if you have any comment, ping me on discord: @Halavus Nenuli#2483</p>
+    <p>Happy VLOOKUP() !</p>
+</div>
+{% endblock %}

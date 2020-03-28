@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}PrUn Inventory Importer{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <h1>Hello, trader!</h1>
+</div>
+
+{{ wtf.quick_form(form) }}
+
+<br>
+
+{% include "datacheck_market.html" %}
+
+{% if element %}
+{% set e=element %}
+    <button onclick='copyField("jsonstring")'>Copy json string of all data to clipboard</button>
+    {{ wtf.quick_form(jsonstring) }}
+    </br>
+    <!-- Testing data
+
+    <h4>Here's the data:</h4>
+    {{ e.data }}
+    <h4>e.element</h4>
+    {{ e.element }}
+    -->
+    {% for dic in e.element %}
+    {% set id=dic.join(["'", "'"]) %}
+    <div class="pull-left" style="padding-left: 10px; padding-right: 10px;">
+    <button style="width: 100%;" onclick='copy( document.getElementById({{ id }}) )'>Copy {{ dic }} to clipboard</button>
+    <table class="table table-bordered" style="min-width:20%;" id={{ dic }}>
+        <th colspan="2" text-align="center">{{ dic }}</th>
+        {% for i in e.element[dic] %}
+        <tr>
+            <td>{{ i }}</td>
+            <td>{{ e.element[dic][i] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    </div>
+    {% endfor %}
+{% endif %}
+{% endblock %}
