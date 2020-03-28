@@ -4,7 +4,7 @@ Requirements
 - Python 3
 - Git repo
 
-Installation
+Installation (linux)
 
 1. Create a virtualenv in the base dir `pyhon3 -m venv venv`
 2. Activate virtualenv `source venv/bin/activate`
