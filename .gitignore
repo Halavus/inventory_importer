@@ -13,7 +13,8 @@ inv.txt
 testing/
 *test*.py
 zzz*
-files/*
+application/files/*
 !.keepdir
 fillfunc.py
 .env
+.gitmodules
