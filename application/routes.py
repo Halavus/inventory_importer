@@ -13,8 +13,6 @@ from .modules.screenimporter import Importer as screen
 
 from .modules.branchname import branchname
 
-#bootstrap = Bootstrap(app)
-
 
 def checkdata(module, arg):
     imp = module(arg)
@@ -124,7 +122,8 @@ def send_file(path):
 
 @app.route('/tutorial_importers')
 def tutorial_importers():
-    return render_template('tutorial_importers.html')
+    prodlink = url_for('productionlines')
+    return render_template('tutorial_importers.html', prodlink=prodlink) )
 
 
 @app.route('/tutorial_market')
