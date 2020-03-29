@@ -18,5 +18,9 @@ Installation (linux)
 
 App startup
 - Activate virtualenv (see above) and run `python wsgi.py`
+
 or
 - `./path/to/venv/bin/gunicorn -b 0.0.0.0:5000 wsgi:app`
+
+Online version of the website 
+http://prun.halavus.com
