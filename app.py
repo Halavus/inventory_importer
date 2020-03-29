@@ -10,7 +10,12 @@ from wtforms.validators import DataRequired
 from modules.importer import Importer as inv_importer
 from modules.prodimporter import Importer as prod_importer
 from modules.screenimporter import Importer as screen
+
+from modules.branchname import branchname
+
 from secret_key import secret_key as secret_key
+
+
 
 app = Flask(__name__)
 
@@ -79,10 +84,12 @@ def internal_server_error(e):
 
 nav = Nav()
 
+namestring = "PrUn Data Importer "+branchname()
+
 @nav.navigation()
 def impnavbar():
     return Navbar(
-            'PrUn Data Importer',
+            namestring,
             View('Market Infos Screen', 'marketinfos'),
             View('Inventory Importer', 'inventory'),
             View('Production Lines', 'productionlines'),
