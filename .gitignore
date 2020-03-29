@@ -11,3 +11,5 @@ application/files/*
 !.keepdir
 .env
 .gitmodules
+secret_key.py
+index.html
