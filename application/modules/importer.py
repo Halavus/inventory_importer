@@ -1,5 +1,3 @@
-#!py3
-
 import re
 import csv
 from itertools import zip_longest
@@ -10,9 +8,6 @@ from .regex import inventory_importer as regex
 class Importer:
 
     def __init__(self, data):
-
-        # self.data for testing purposes
-        self.data = data
         
         self.match = re.findall(regex, data)
 
