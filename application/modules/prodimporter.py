@@ -1,5 +1,3 @@
-#!py3
-
 import re
 from itertools import zip_longest
 
