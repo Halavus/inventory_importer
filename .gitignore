@@ -1,9 +1,5 @@
 gunicorn*
 logs/*
-__*
-!__init__.py
-venv
-*.swp
 favicon_io
 favicon.ico
 *.csv

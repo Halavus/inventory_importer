@@ -1,5 +1,7 @@
 from flask import Flask
 from flask_bootstrap import Bootstrap
+from werkzeug.debug import DebuggedApplication
+
 
 # Globally accessible libraries
 #db = SQLAlchemy()
