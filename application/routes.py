@@ -1,20 +1,20 @@
 from flask import Flask, render_template, url_for, session, send_from_directory
 from flask import current_app as app
 
-from flask_bootstrap import Bootstrap
 from flask_nav import Nav
 from flask_nav.elements import Navbar, View, Subgroup
 
 from .forms import InvForm, ProdForm, ScreenForm, JsonForm
 
-from .modules.importer import Importer as inv_importer
-from .modules.prodimporter import Importer as prod_importer
+from .modules.invimporter import Importer as invimporter
+from .modules.prodimporter import Importer as prodimporter
 from .modules.screenimporter import Importer as screen
 
 from .modules.branchname import branchname
 
 
 def checkdata(module, arg):
+    '''returns bool'''
     imp = module(arg)
     check = imp.nodata
 
@@ -22,7 +22,7 @@ def checkdata(module, arg):
 
 
 def makeinventory(arg):
-    imp = inv_importer(arg)
+    imp = invimporter(arg)
     if imp.nodata is True:
         table = None
     else:
@@ -37,7 +37,7 @@ def inventory():
     datacheck = False
     form = InvForm()
     if form.validate_on_submit():
-        datacheck = checkdata(inv_importer, form.string.data)
+        datacheck = checkdata(invimporter, form.string.data)
         if not datacheck:
             element = makeinventory(form.string.data)
         form.string.data = ''
@@ -54,9 +54,9 @@ def productionlines():
     datacheck = False
     form = ProdForm()
     if form.validate_on_submit():
-        datacheck = checkdata(prod_importer, form.string.data)
+        datacheck = checkdata(prodimporter, form.string.data)
         if not datacheck:
-            element = prod_importer(form.string.data)
+            element = prodimporter(form.string.data)
         form.string.data = ''
     return render_template('production.html',
                            form=form,
@@ -76,8 +76,6 @@ def marketinfos():
     datacheck = False
     form = ScreenForm()
     jsonstring = JsonForm()
-    # Remove Submit btn from JsonForm
-    jsonstring.submit = "hello"
     link = ""
     json_filepath = ""
 
@@ -123,7 +121,7 @@ def send_file(path):
 @app.route('/tutorial_importers')
 def tutorial_importers():
     prodlink = url_for('productionlines')
-    return render_template('tutorial_importers.html', prodlink=prodlink) )
+    return render_template('tutorial_importers.html', prodlink=prodlink)
 
 
 @app.route('/tutorial_market')
@@ -167,13 +165,15 @@ def internal_server_error(e):
 
 nav = Nav()
 
-#TODO make clickable link as navbar name
-#namestring = '<a href="'+url_for("marketinfos")+'"PrUn Data Importer '+branchname()+'</a>'
-
-namestring = "PrUn Data Importer "+branchname()
 
 @nav.navigation()
 def impnavbar():
+
+    #TODO make clickable link as navbar name
+    # following code doesn't work
+    #namestring = '<a href="'+url_for("marketinfos")+'"PrUn Data Importer '+branchname()+'</a>'
+    namestring = "PrUn Data Importer "+branchname()
+
     return Navbar(
         namestring,
         View('Market Infos Screen', 'marketinfos'),

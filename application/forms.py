@@ -5,6 +5,7 @@ from wtforms import TextAreaField, SubmitField
 
 
 class InvForm(FlaskForm):
+    '''Used in inventory importer'''
     string = TextAreaField(
         'Paste the html "InventoryView__grid" element and submit',
         render_kw={"placeholder":
@@ -15,6 +16,7 @@ class InvForm(FlaskForm):
 
 
 class ProdForm(FlaskForm):
+    '''Used in production lines'''
     string = TextAreaField(
         'Paste the html "SiteProductionLines__column___" element and submit',
         render_kw={"placeholder":
@@ -26,6 +28,7 @@ class ProdForm(FlaskForm):
 
 
 class ScreenForm(FlaskForm):
+    '''Used in marketinfos'''
     string = TextAreaField(
         'Paste your market infos screen',
         render_kw={"placeholder":
