@@ -55,7 +55,7 @@ class Importer:
                         except Exception:
                             element[identifier]=infos
 
-                    ''' Do currencies have to be present in this dataset?
+                    ''' Do currencies have to appear in this dataset?
                     if yes correct the code...
 
                     if cx=="IC1":
@@ -74,10 +74,10 @@ class Importer:
         def cleaner(element=compiler()[0], headers=compiler()[1]):
             rm = ["cx", "ticker"]
             for dic in element:
-                for k in list(element[dic]):
-                    for s in rm:
-                        if s in k:
-                            del element[dic][k]
+                for key in list(element[dic]):
+                    for string in rm:
+                        if string in key:
+                            del element[dic][key]
 
             headers[:] = [h for h in headers if h[4:] not in rm]
 
@@ -86,29 +86,21 @@ class Importer:
             return element
 
         element = cleaner()
-        self.element = element
+        # self.element for testing purposes
+        #self.element = element
 
         # This nice fill func should be copied in a private package
-        def fill(lst, index, add, fillvalue=None):
-            '''Fills a list with a add value based on list index'''
-            '''Let the value in place if present'''
-            for n in range(index):
-                try:
-                    if lst[n]:
-                        pass
-                except Exception:
-                    lst.append(fillvalue)
-            try:
-                if lst[index]:
-                    pass
-                else:
-                    lst[index]=add
-            except Exception:
-                if index==len(lst):
-                    #if check not mandatory
-                    lst.append(add)
-            return lst
+        def fill(lst, index, value, fill_value=None):
+            """Place the `value` at index `index`,
+            but only if the value already there is `None`.
+            Extends the list with `fill_value`, if necessary.
+            """
+            # No-op if list long enough or index negative
+            lst.extend([fill_value] * (index - len(lst) + 1))
+            if lst[index] is None:
+                lst[index] = value
 
+        # Matrix generation to render the ihtml-table in the template
         matrix = [element["headers"]]
 
         linenumber=1
@@ -133,14 +125,13 @@ class Importer:
                                 print(element[row][label])
 
                                 #use tuples in matrix for datacheck
-                                add=(header, element[row][label])
+                                value=(header, element[row][label])
                             else:
-                                add=element[row][label]
+                                value=element[row][label]
 
                             fill(lst=matrix[linenumber],
                                  index=matrix[0].index(header),
-                                 add=add,
-                                 fillvalue=None)
+                                 value=value)
                         else:
                             pass
                 if debug:
@@ -149,8 +140,8 @@ class Importer:
 
         self.matrix=matrix
 
-        self.json = json.dumps(self.element)
+        self.json = json.dumps(element)
 
         self.nodata=False
-        if self.element=={"headers": ["Ticker"]}:
+        if element=={"headers": ["Ticker"]}:
             self.nodata=True

@@ -58,7 +58,7 @@ class Importer:
                 dic["timestamp"] = times["timestamp"]
 
                 queue_times.append(dic)
-        
+
         def sorting(dic=prod_times, arg="timestamp"):
             return dic[arg]
 
@@ -82,22 +82,19 @@ class Importer:
                 counter += 1
             return lst
 
-        self.nodata=False
-
-        o=outputmaker
-
         self.prod = {
-                "styles" : o("mats_units", 0, production),
-                "mats" : o("mats_units", 1, production),
-                "units" : o("mats_units", 2, production),
-                "timestamps" : o("times", "timestamp", production),
-                "timers" : o("times", "timer", production)}
+                "styles" : outputmaker("mats_units", 0, production),
+                "mats" : outputmaker("mats_units", 1, production),
+                "units" : outputmaker("mats_units", 2, production),
+                "timestamps" : outputmaker("times", "timestamp", production),
+                "timers" : outputmaker("times", "timer", production)}
         self.queue = {
-                "styles" : o("mats_units", 0, queue),
-                "mats" : o("mats_units", 1, queue),
-                "units" : o("mats_units", 2, queue),
-                "timestamps" : o("times", "timestamp", queue),
-                "timers" : o("times", "timer", queue)}
+                "styles" : outputmaker("mats_units", 0, queue),
+                "mats" : outputmaker("mats_units", 1, queue),
+                "units" : outputmaker("mats_units", 2, queue),
+                "timestamps" : outputmaker("times", "timestamp", queue),
+                "timers" : outputmaker("times", "timer", queue)}
 
+        self.nodata=False
         if prodtimes_import==[]:
              self.nodata=True

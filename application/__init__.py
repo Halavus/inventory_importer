@@ -10,7 +10,7 @@ bootstrap = Bootstrap()
 
 def create_app():
     """Initialize the core application."""
-    app = Flask(__name__, static_url_path='', instance_relative_config=False)
+    app = Flask(__name__, static_url_path='/', instance_relative_config=False)
     app.config.from_object('config.Config')
 
     # Initialize Plugins

@@ -69,6 +69,7 @@ def profitredirect(arg):
     return url_for('shippingprofits', arg=arg)
 
 
+# This view still under construction
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/marketinfos', methods=['GET', 'POST'])
 def marketinfos():
@@ -86,7 +87,7 @@ def marketinfos():
             jsonstring.string.data = element.json
 
             h = str(hash(element.json))
-            json_filepath = 'files/'+h+'.json'
+            json_filepath = 'application/files/'+h+'.json'
             with open(json_filepath, 'w') as f:
                 f.write(str(element.json))
         form.string.data = ''
@@ -106,6 +107,7 @@ def marketinfos():
                            )
 
 
+# This view still under construction
 @app.route('/shippingprofits', methods=['GET', 'POST'])
 def shippingprofits():
     messages = session["messages"]
@@ -113,6 +115,7 @@ def shippingprofits():
     return render_template('shippingprofits.html', link=link)
 
 
+# For testing purposes
 @app.route('/files/<path:path>')
 def send_file(path):
     return send_from_directory('files', path, as_attachment=True)
