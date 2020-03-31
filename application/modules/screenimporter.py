@@ -10,9 +10,9 @@ class Importer:
 
     def __init__(self, data, debug=False):
 
-        data=data.replace('\r\n', '\n')
+        data = data.replace('\r\n', '\n')
 
-        dic={}
+        dic = {}
 
         for i in regex:
             "Structure: {[{infos}]}"
@@ -21,12 +21,12 @@ class Importer:
             matches = re.finditer(regex[i], data)
             for match in matches:
 
-                if match.group(1)!=None:
+                if match.group(1) is not None:
                     m.append(match.group(1))
                 else:
                     m.append(match.group(4))
 
-                dic[i]=m
+                dic[i] = m
 
         def compiler(dic=dic):
             "New structure: {ticker: {cx.label: info}}"
@@ -43,17 +43,18 @@ class Importer:
                     cx = dic["cx"][n-1]
                     identifier = dic["ticker"][n-1]
                     for i in dic:
-                        id2=str(cx)+"."+str(i)
-                        infos[id2]=dic[i][n-1]
+                        id2 = str(cx)+"."+str(i)
+                        infos[id2] = dic[i][n-1]
                         if id2 in headers:
                             pass
                         else:
                             headers.append(id2)
                         try:
                             if element[identifier]:
-                                element[identifier][id2]=infos[id2].replace(",", "")
+                                element[identifier][id2] = infos[id2].replace(
+                                    ",", "")
                         except Exception:
-                            element[identifier]=infos
+                            element[identifier] = infos
 
                     ''' Do currencies have to appear in this dataset?
                     if yes correct the code...
@@ -81,13 +82,13 @@ class Importer:
 
             headers[:] = [h for h in headers if h[4:] not in rm]
 
-            element["headers"]=headers
+            element["headers"] = headers
 
             return element
 
         element = cleaner()
         # self.element for testing purposes
-        #self.element = element
+        self.element = element
 
         # This nice fill func should be copied in a private package
         def fill(lst, index, value, fill_value=None):
@@ -103,9 +104,9 @@ class Importer:
         # Matrix generation to render the ihtml-table in the template
         matrix = [element["headers"]]
 
-        linenumber=1
+        linenumber = 1
         for row in element:
-            if row=="headers":
+            if row == "headers":
                 pass
             else:
                 matrix.append([])
@@ -117,17 +118,18 @@ class Importer:
                     for header in matrix[0][1:]:
                         if debug:
                             print("header: "+header)
-                        if label==header:
+                        if label == header:
                             if debug:
                                 print("linenumber: "+str(linenumber))
                                 print("matrix line: "+str(matrix[linenumber]))
-                                print("index header: "+str(matrix[0].index(header)))
+                                print("index header: " +
+                                      str(matrix[0].index(header)))
                                 print(element[row][label])
 
-                                #use tuples in matrix for datacheck
-                                value=(header, element[row][label])
+                                # use tuples in matrix for datacheck
+                                value = (header, element[row][label])
                             else:
-                                value=element[row][label]
+                                value = element[row][label]
 
                             fill(lst=matrix[linenumber],
                                  index=matrix[0].index(header),
@@ -136,12 +138,15 @@ class Importer:
                             pass
                 if debug:
                     print(matrix)
-                linenumber+=1
+                linenumber += 1
 
-        self.matrix=matrix
+        self.matrix = matrix
 
-        self.json = json.dumps(element)
+        # type str
+        self.jsonstring = json.dumps(element)
+        # type dict
+        self.jsondict = element
 
-        self.nodata=False
-        if element=={"headers": ["Ticker"]}:
-            self.nodata=True
+        self.nodata = False
+        if element == {"headers": ["Ticker"]}:
+            self.nodata = True
