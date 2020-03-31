@@ -1,0 +1,3 @@
+[submodule "application/modules/shipping_profits"]
+	path = application/modules/shipping_profits
+	url = /home/walo/code_the_web/python/PrUn/shipping_profits
