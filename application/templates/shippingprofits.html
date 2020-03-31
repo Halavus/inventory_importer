@@ -1,29 +1,17 @@
 {% extends "base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
-{% block title %}PrUn Inventory Importer{% endblock %}
-
 {% block page_content %}
 <div class="page-header">
-    <h1>Hello, manager!</h1>
+    <h1>Hello, trader!</h1>
 </div>
 
-{{ messages }}
-
-<a href="/files/tst.json" class="btn btn-default">Calculate profit</a>
-
-<br>
-{% include "datacheck.html" %} 
-
-{% if element %}
-    <p>Here's your inventory:</p>
-    <button onclick="copy( document.getElementById('inv_table') )">Copy table to clipboard</button>
-    <table class="table table-bordered" style="max-width:20%;" id="inv_table">
-        {% for i in element %}
-        <tr>
-            <td style="vertical-align: middle; text-align: center; {{ i[0] }} " >{{ i[1] }}</td>
-            <td>{{ i[2] }}</td>
-        </tr>
-        {% endfor %}
+<p>This page is still under construction. More features to come soon...</p>
+{% if jsonstring %}
+	</br>
+	<p>But you can 
+	<a href="{{ filepath }}" class="btn btn-warning">download a csv file</a> containing the profits data.</p>
+	<p>All credits for those calculations go to @skuldomg. Thanks!</p>
 {% endif %}
+
 {% endblock %}

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, session, send_from_directory
+from flask import render_template, url_for, session, send_from_directory, request
 from flask import current_app as app
 
 from flask_nav import Nav
@@ -8,9 +8,10 @@ from .forms import InvForm, ProdForm, ScreenForm, JsonForm
 
 from .modules.invimporter import Importer as invimporter
 from .modules.prodimporter import Importer as prodimporter
-from .modules.screenimporter import Importer as screen
-
+from .modules.screenimporter import Importer as screenimporter
 from .modules.branchname import branchname
+
+from .modules.shipping_profits.findProfits import Filewriter
 
 
 def checkdata(module, arg):
@@ -65,43 +66,49 @@ def productionlines():
                            )
 
 
-def profitredirect(arg):
-    return url_for('shippingprofits', arg=arg)
+def profitredirect(**kwarg):
+    return url_for('shippingprofits', **kwarg)
 
 
-# This view still under construction
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/marketinfos', methods=['GET', 'POST'])
 def marketinfos():
     element = None
     datacheck = False
-    form = ScreenForm()
-    jsonstring = JsonForm()
+    submitform = ScreenForm()
+    jsonform = JsonForm()
+
+    # Blank values to load an empty page properly
+    jsonstring = ""
     link = ""
-    json_filepath = ""
 
-    if form.validate_on_submit():
-        datacheck = checkdata(screen, form.string.data)
+    if submitform.validate_on_submit():
+        datacheck = checkdata(screenimporter, submitform.string.data)
         if not datacheck:
-            element = screen(form.string.data)
-            jsonstring.string.data = element.json
+            element = screenimporter(submitform.string.data)
+            jsonform.string.data = element.jsondict
+            jsonstring = element.jsonstring
+            jsondict = element.jsondict
 
-            h = str(hash(element.json))
-            json_filepath = 'application/files/'+h+'.json'
-            with open(json_filepath, 'w') as f:
-                f.write(str(element.json))
-        form.string.data = ''
+            h = str(hash(jsonstring))
 
-        messages = json_filepath
-        session['messages'] = messages
+            # url message
+            messages = h
+            # json stored in a cookie
+            # Has to be a dict for in order to get it in shippingprofits
+            session[h] = jsondict
+            # for testing purposes
+            session['hash'] = h
 
-        link = profitredirect(messages)
+            link = profitredirect(messages=messages)
+
+        submitform.string.data = ''
 
     return render_template('marketinfos.html',
-                           form=form,
+                           submitform=submitform,
                            element=element,
+                           jsonform=jsonform,
                            jsonstring=jsonstring,
-                           json_filepath=json_filepath,
                            datacheck=datacheck,
                            link=link,
                            )
@@ -110,15 +117,32 @@ def marketinfos():
 # This view still under construction
 @app.route('/shippingprofits', methods=['GET', 'POST'])
 def shippingprofits():
-    messages = session["messages"]
-    link = profitredirect(messages)
-    return render_template('shippingprofits.html', link=link)
+    filepath = ""
+
+    # check if redirected from marketinfos and get the cookie data
+    try:
+        h = request.args['messages']
+        jsonstring = session.get(h)
+        filepath = "application/files/"+h+".csv"
+        data = Filewriter(jsonstring, filepath)
+        Filewriter.csvmaker(data)
+
+    except KeyError:
+        jsonstring = None
+
+    return render_template('shippingprofits.html',
+                           jsonstring=jsonstring,
+                           filepath=filepath
+                           )
 
 
-# For testing purposes
-@app.route('/files/<path:path>')
+# File downloader
+@app.route('/application/files/<path:path>')
 def send_file(path):
-    return send_from_directory('files', path, as_attachment=True)
+    return send_from_directory('files',
+                               path,
+                               as_attachment=True,
+                               )
 
 
 @app.route('/tutorial_importers')
@@ -132,6 +156,7 @@ def tutorial_market():
     return render_template('tutorial_market.html')
 
 
+'''
 @app.route('/test', methods=['GET', 'POST'])
 def test():
     element = None
@@ -150,6 +175,7 @@ def test():
                            jsonstring=jsonstring,
                            datacheck=datacheck,
                            )
+'''
 
 
 @app.context_processor
@@ -166,13 +192,14 @@ def page_not_found(e):
 def internal_server_error(e):
     return render_template('500.html'), 500
 
+
 nav = Nav()
 
 
 @nav.navigation()
 def impnavbar():
 
-    #TODO make clickable link as navbar name
+    # TODO make navbar name a clickable link redirecting to /home
     # following code doesn't work
     #namestring = '<a href="'+url_for("marketinfos")+'"PrUn Data Importer '+branchname()+'</a>'
     namestring = "PrUn Data Importer "+branchname()
@@ -180,7 +207,7 @@ def impnavbar():
     return Navbar(
         namestring,
         View('Market Infos Screen', 'marketinfos'),
-        View('Shipping Profits', 'shippingprofits'),
+        #View('Shipping Profits', 'shippingprofits'),
         View('Inventory Importer', 'inventory'),
         View('Production Lines', 'productionlines'),
         Subgroup('Turorials',
