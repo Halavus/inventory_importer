@@ -1,6 +1,4 @@
-import re
-
-separator="|"
+separator = "|"
 
 regexcolor_chrome = (
         'background: linear-gradient\(135deg,'
@@ -23,7 +21,7 @@ startamount = ('(?<=<div class="MaterialIcon__indicator___2QhPuFO'
 
 mat = ""
 for i in matches_mat:
-    # creates the regex string with correct syntax for every match
+    # generate the regex string with correct syntax for every match
     mat = mat+startmat+i+separator
 
 # TO IMPORT
@@ -37,7 +35,7 @@ units_prod = '(?<=p"><span>)\d+(?= unit)'
 
 # TO IMPORT
 prod_importer = {
-        "mat": regexcolor+separator+mat+units_prod, 
+        "mat": regexcolor+separator+mat+units_prod,
         "prodtime": match_prodtime,
         "progress": match_progress}
 
@@ -46,15 +44,13 @@ prod_importer = {
 screen_name = '(?<=SCRN: )(?P<screen_name>.*)(?=nSCRNS)'
 
 
-
 ## Elements
 
 # Matches 15,000,000,000,000,000.00, 45.00, 100, 5.00
 # Watch out for the decimals !
 # also matches the --
-#regex_prun_numbers = '(\d{1,3}(,\d{3})*(\.\d{2})?)'
 regex_prun_numbers = r'((\d{1,3}(,\d{3})*(\.\d{2})?)|(\-{2}))'
-rpn=regex_prun_numbers
+rpn = regex_prun_numbers
 
 commodity_data = {
     'ticker': r'(?<=MAT )(H2O|HE3|NV1|NV2|[A-Z]{1,3})(?=\nCXPC)',
