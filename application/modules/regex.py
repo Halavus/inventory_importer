@@ -1,6 +1,4 @@
-import re
-
-separator="|"
+separator = "|"
 
 regexcolor_chrome = (
         'background: linear-gradient\(135deg,'
@@ -21,9 +19,18 @@ startmat = '(?<=<span class="ColoredIcon__label___j9bHRXy">)'
 startamount = ('(?<=<div class="MaterialIcon__indicator___2QhPuFO'
                ' MaterialIcon__type-very-small___kE8NFjh">)')
 
+## BLCK items in inventory
+
+startblck = '(?<=<div><div class="GridItemView__container___2w6wM6r" draggable="true"><div class="GridItemView__image___qBVipu1"><div class="ColoredIcon__container___1H-MG70" title="Blocked Materials #)'
+endblck = '(?=#\d+</span></div></div>)'
+
+blck = startblck+'.*'+endblck
+
+# Inventory
+
 mat = ""
 for i in matches_mat:
-    # creates the regex string with correct syntax for every match
+    # generate the regex string with correct syntax for every match
     mat = mat+startmat+i+separator
 
 # TO IMPORT
@@ -37,7 +44,7 @@ units_prod = '(?<=p"><span>)\d+(?= unit)'
 
 # TO IMPORT
 prod_importer = {
-        "mat": regexcolor+separator+mat+units_prod, 
+        "mat": regexcolor+separator+mat+units_prod,
         "prodtime": match_prodtime,
         "progress": match_progress}
 
@@ -46,15 +53,13 @@ prod_importer = {
 screen_name = '(?<=SCRN: )(?P<screen_name>.*)(?=nSCRNS)'
 
 
-
 ## Elements
 
 # Matches 15,000,000,000,000,000.00, 45.00, 100, 5.00
 # Watch out for the decimals !
 # also matches the --
-#regex_prun_numbers = '(\d{1,3}(,\d{3})*(\.\d{2})?)'
 regex_prun_numbers = r'((\d{1,3}(,\d{3})*(\.\d{2})?)|(\-{2}))'
-rpn=regex_prun_numbers
+rpn = regex_prun_numbers
 
 commodity_data = {
     'ticker': r'(?<=MAT )(H2O|HE3|NV1|NV2|[A-Z]{1,3})(?=\nCXPC)',
