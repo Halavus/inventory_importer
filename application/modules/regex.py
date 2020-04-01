@@ -19,6 +19,15 @@ startmat = '(?<=<span class="ColoredIcon__label___j9bHRXy">)'
 startamount = ('(?<=<div class="MaterialIcon__indicator___2QhPuFO'
                ' MaterialIcon__type-very-small___kE8NFjh">)')
 
+## BLCK items in inventory
+
+startblck = '(?<=<div><div class="GridItemView__container___2w6wM6r" draggable="true"><div class="GridItemView__image___qBVipu1"><div class="ColoredIcon__container___1H-MG70" title="Blocked Materials #)'
+endblck = '(?=#\d+</span></div></div>)'
+
+blck = startblck+'.*'+endblck
+
+# Inventory
+
 mat = ""
 for i in matches_mat:
     # generate the regex string with correct syntax for every match
