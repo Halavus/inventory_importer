@@ -19,12 +19,27 @@ startmat = '(?<=<span class="ColoredIcon__label___j9bHRXy">)'
 startamount = ('(?<=<div class="MaterialIcon__indicator___2QhPuFO'
                ' MaterialIcon__type-very-small___kE8NFjh">)')
 
-## BLCK items in inventory
+## BLCK & SHPT items in inventory
 
-startblck = '(?<=<div><div class="GridItemView__container___2w6wM6r" draggable="true"><div class="GridItemView__image___qBVipu1"><div class="ColoredIcon__container___1H-MG70" title="Blocked Materials #)'
-endblck = '(?=#\d+</span></div></div>)'
+# Filter by BLCK or SHPT #number
 
-blck = startblck+'.*'+endblck
+startnum = '(?<=<div><div class="GridItemView__container___2w6wM6r" draggable="true"><div class="GridItemView__image___qBVipu1"><div class="ColoredIcon__container___1H-MG70" title=")'
+lookup = '(Shipment #\d+)|(Blocked Materials #\d+)'
+endnum = '(?=" style=")'
+
+num = startnum+lookup+endnum
+
+startblsh = '(?<=<div><div class="GridItemView__container___2w6wM6r" draggable="true"><div class="GridItemView__image___qBVipu1"><div class="ColoredIcon__container___1H-MG70" title="'
+
+#endblsh = '(?=#\d+</span></div></div>)'
+#blck = startblck+'.*'+endblck
+
+def cleaner(num, start=startblsh):
+    startblsh = start+num+')'
+    endblsh = '(?='+num+')'
+    lookup = '.*'
+
+    return startblsh+lookup+endblsh
 
 # Inventory
 

@@ -1,16 +1,39 @@
 import re
 from itertools import zip_longest
 
-from .regex import blck
+from .regex import num, cleaner
 from .regex import inventory_importer as regex
 
 
-class Importer:
+class Importer():
 
-    def __init__(self, data):
-        matchblck = re.findall(blck, data)
-        for i in matchblck:
-            data = data.replace(str(i), "")
+    def __init__(self, data, debug=False):
+        # Cleanup job for BLCK and SHPT items
+        # 
+        # TODO: find more elegant way to achieve this cleaning
+        # - concatenate tuples?
+        # - do not output tuples? 
+
+        matchnum = re.findall(num, data)
+        if debug:
+            print(matchnum)
+        self.matchnum = matchnum
+
+        for i in matchnum:
+            for w in i:
+                # matchnum outputs a list of tuple. ('', 'match'). Do nothing with the empty string.
+                if w:
+                    if debug:
+                        print(w)
+                    blsh = cleaner(w)
+                    if debug:
+                        print(blsh)
+                    matchblsh = re.findall(blsh, data)
+                    if debug:
+                        print(matchblsh)
+                    data = data.replace(matchblsh[0], "")
+        
+        # Match the cleaned data
 
         self.match = re.findall(regex, data)
 
